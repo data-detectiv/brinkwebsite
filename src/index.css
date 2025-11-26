@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Inter", sans-serif;
+  --font-heading: "Poppins", sans-serif;
+  
+  /* BR!NK Color Palette */
+  --color-dark-gray: #2C2C2C;
+  --color-medium-gray: #808080;
+  --color-black: #000000;
+  --color-mustard: #D4AF37;
+  --color-white: #FFFFFF;
+  --color-navy: #1E3A5F;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-display);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  body {
+    background-color: #FFFFFF;
+    overflow-x: hidden;
+  }
+}
+
+
+
