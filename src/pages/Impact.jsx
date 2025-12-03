@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Users, Target, TrendingUp, Heart, Award, Lightbulb } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { containerVariants, itemVariants } from "../utils/helper";
-import ImageCarousel from "../components/ImageCarousel";
 
 // Import images for carousel - using a selection of images
 import img1 from "/assets/IMG-20251125-WA0009.jpg";
@@ -54,24 +53,40 @@ const Impact = () => {
   return (
     <div className={`min-h-screen pt-20 relative overflow-hidden transition-colors ${
       isDarkMode 
-        ? "bg-[#2C2C2C] text-white" 
+        ? "bg-[#1E3A5F] text-white" 
         : "bg-white text-[#2C2C2C]"
     }`}>
+      {/* Top Section Image */}
+      <div className="relative h-64 md:h-96 w-full overflow-hidden">
+        <div className={`absolute inset-0 ${
+          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
+        }`}>
+          <img 
+            src="/assets/IMG-20251125-WA0009.jpg" 
+            alt="Impact" 
+            className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
+        }`}>
+          <h1 className={`text-4xl md:text-6xl font-bold ${
+            isDarkMode ? "text-white" : "text-[#1E3A5F]"
+          }`}>
+            Impact <span className="text-[#D4AF37]">Goals</span>
+          </h1>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          {/* Page Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              Impact <span className="text-[#D4AF37]">Goals</span>
-            </h1>
-            <div className="w-24 h-1 mx-auto bg-[#D4AF37]"></div>
-          </motion.div>
 
           {/* Impact Goals */}
           <motion.div variants={itemVariants} className="mb-16">
@@ -102,15 +117,122 @@ const Impact = () => {
             </div>
           </motion.div>
 
-          {/* Image Gallery Carousel */}
+          {/* Image Gallery with Horizontal Sliding Animation */}
           <motion.div variants={itemVariants} className="mb-16">
             <h2 className={`text-3xl font-semibold text-center mb-8 ${
               isDarkMode ? "text-white" : "text-[#1E3A5F]"
             }`}>
               Our Impact in Action
             </h2>
-            <div className="h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-              <ImageCarousel images={selectedImages} autoSlideInterval={4000} />
+            <div className={`rounded-2xl overflow-hidden shadow-2xl ${
+              isDarkMode ? "bg-[#2C2C2C]/50" : "bg-white/50"
+            }`}>
+              <div className="relative overflow-hidden">
+                {/* First row - sliding left */}
+                <motion.div
+                  className="flex gap-4 p-4"
+                  animate={{
+                    x: [0, -50 * selectedImages.length],
+                  }}
+                  transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  {[...selectedImages, ...selectedImages].map((image, index) => (
+                    <motion.div
+                      key={`row1-${index}`}
+                      className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.1, 
+                        zIndex: 50,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`Impact ${index + 1}`}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+                
+                {/* Second row - sliding right */}
+                <motion.div
+                  className="flex gap-4 p-4"
+                  animate={{
+                    x: [-50 * selectedImages.length, 0],
+                  }}
+                  transition={{
+                    duration: 35,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  {[...selectedImages, ...selectedImages].map((image, index) => (
+                    <motion.div
+                      key={`row2-${index}`}
+                      className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.1, 
+                        zIndex: 50,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`Impact ${index + 1}`}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {/* Third row - sliding left (faster) */}
+                <motion.div
+                  className="flex gap-4 p-4"
+                  animate={{
+                    x: [0, -50 * selectedImages.length],
+                  }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  {[...selectedImages, ...selectedImages].map((image, index) => (
+                    <motion.div
+                      key={`row3-${index}`}
+                      className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.1, 
+                        zIndex: 50,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`Impact ${index + 1}`}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             </div>
           </motion.div>
 

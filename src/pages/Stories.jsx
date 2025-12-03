@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Calendar, User } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
@@ -5,6 +6,7 @@ import { containerVariants, itemVariants } from "../utils/helper";
 
 const Stories = () => {
   const { isDarkMode } = useTheme();
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const blogPosts = [
     {
@@ -61,12 +63,41 @@ const Stories = () => {
     "Summit Recaps"
   ];
 
+  const filteredPosts = selectedCategory === "All" 
+    ? blogPosts 
+    : blogPosts.filter(post => post.category === selectedCategory);
+
   return (
     <div className={`min-h-screen transition-all duration-500 ${
       isDarkMode 
-        ? "bg-[#2C2C2C] text-white" 
+        ? "bg-[#1E3A5F] text-white" 
         : "bg-white text-[#2C2C2C]"
     } pt-20`}>
+      {/* Top Section Image */}
+      <div className="relative h-64 md:h-96 w-full overflow-hidden">
+        <div className={`absolute inset-0 ${
+          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
+        }`}>
+          <img 
+            src="/assets/IMG-20251125-WA0009.jpg" 
+            alt="Stories & Blog" 
+            className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
+        }`}>
+          <h1 className={`text-4xl md:text-6xl font-bold ${
+            isDarkMode ? "text-white" : "text-[#1E3A5F]"
+          }`}>
+            Stories & <span className="text-[#D4AF37]">Blog</span>
+          </h1>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 py-16">
         <motion.div
           initial="hidden"
@@ -75,13 +106,7 @@ const Stories = () => {
         >
           {/* Page Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              Stories & <span className="text-[#D4AF37]">Blog</span>
-            </h1>
-            <div className="w-24 h-1 mx-auto bg-[#D4AF37]"></div>
-            <p className={`text-lg mt-6 max-w-2xl mx-auto ${
+            <p className={`text-lg max-w-2xl mx-auto ${
               isDarkMode ? "text-white/80" : "text-[#2C2C2C]"
             }`}>
               Insights, stories, and lessons from our community of students, mentors, and leaders.
@@ -93,10 +118,11 @@ const Stories = () => {
             {categories.map((category, index) => (
               <motion.button
                 key={index}
+                onClick={() => setSelectedCategory(category)}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-4 py-2 rounded-full text-sm uppercase tracking-wider transition-all ${
-                  index === 0
+                  selectedCategory === category
                     ? `bg-[#D4AF37] text-[#000000]`
                     : isDarkMode
                     ? "bg-[#1E3A5F] text-white/80 hover:text-[#D4AF37] hover:bg-[#2C2C2C]"
@@ -110,7 +136,7 @@ const Stories = () => {
 
           {/* Blog Posts Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.map((post, index) => (
+            {filteredPosts.map((post, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}

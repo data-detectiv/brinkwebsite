@@ -46,9 +46,34 @@ const FAQ = () => {
   return (
     <div className={`min-h-screen transition-all duration-500 ${
       isDarkMode 
-        ? "bg-[#2C2C2C] text-white" 
+        ? "bg-[#1E3A5F] text-white" 
         : "bg-white text-[#2C2C2C]"
     } pt-20`}>
+      {/* Top Section Image */}
+      <div className="relative h-64 md:h-96 w-full overflow-hidden">
+        <div className={`absolute inset-0 ${
+          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
+        }`}>
+          <img 
+            src="/assets/brink_logo.jpg" 
+            alt="FAQ" 
+            className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
+        }`}>
+          <h1 className={`text-4xl md:text-6xl font-bold ${
+            isDarkMode ? "text-white" : "text-[#1E3A5F]"
+          }`}>
+            Frequently Asked <span className="text-[#D4AF37]">Questions</span>
+          </h1>
+        </div>
+      </div>
+
       <div className="max-w-4xl mx-auto px-6 py-16">
         <motion.div
           initial="hidden"

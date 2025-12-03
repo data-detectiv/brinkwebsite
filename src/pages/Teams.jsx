@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Linkedin, Instagram } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { containerVariants, itemVariants } from "../utils/helper";
 import fosterOppong from "/assets/FosterOppong.jpg";
@@ -13,43 +14,55 @@ const Teams = () => {
       role: "Founder & Executive Director",
       name: "Godbless Pelpuo",
       title: "Founder of BR!NK, Speaker, Youth Development Leader",
-      image: fosterOppong,
-      bio: "Passionate about empowering the next generation to discover their purpose and lead with impact."
-    },
-    {
-      role: "Team Member",
-      name: "Team Member",
-      title: "Oversees program development and implementation",
       image: headshots,
-      bio: "Dedicated to creating transformational experiences for students."
+      bio: "Passionate about empowering the next generation to discover their purpose and lead with impact.",
+      linkedin: "https://www.linkedin.com/in/godbless-pelpuo", // Replace with actual LinkedIn URL
+      instagram: "https://www.instagram.com/brinkwithgodbless/" // Replace with actual Instagram URL
     },
     {
-      role: "Team Member",
-      name: "Team Member",
+      role: "Co-founder",
+      name: "Desmond Duodu",
+      title: "Oversees program development and implementation",
+      image: fosterOppong,
+      bio: "Dedicated to creating transformational experiences for students.",
+      linkedin: "https://www.linkedin.com/in/desmond-duodu", // Replace with actual LinkedIn URL
+      instagram: "https://www.instagram.com/desmond_duodu" // Replace with actual Instagram URL
+    },
+    {
+      role: "Co-founder",
+      name: "Foster Oppong",
       title: "Builds partnerships and community connections",
-      image: oneDog,
-      bio: "Connecting students with opportunities and meaningful relationships."
+      image: fosterOppong,
+      bio: "Connecting students with opportunities and meaningful relationships.",
+      linkedin: "https://www.linkedin.com/in/foster-oppong", // Replace with actual LinkedIn URL
+      instagram: "https://www.instagram.com/foster_oppong" // Replace with actual Instagram URL
     },
     {
-      role: "Team Member",
-      name: "Team Member",
+      role: "Co-founder",
+      name: "Donavan Adu",
       title: "Manages podcast, social media, and digital content",
       image: fosterOppong,
-      bio: "Amplifying the BR!NK message and student stories."
+      bio: "Amplifying the BR!NK message and student stories.",
+      linkedin: "https://www.linkedin.com/in/donavan-adu", // Replace with actual LinkedIn URL
+      instagram: "https://www.instagram.com/donavan_adu" // Replace with actual Instagram URL
     },
     {
-      role: "Team Member",
-      name: "Team Member",
+      role: "Co-founder",
+      name: "Donavan Adu",
       title: "Facilitates mentor-student matching and programs",
       image: headshots,
-      bio: "Ensuring meaningful mentorship relationships that transform lives."
+      bio: "Ensuring meaningful mentorship relationships that transform lives.",
+      linkedin: "https://www.linkedin.com/in/donavan-adu", // Replace with actual LinkedIn URL
+      instagram: "https://www.instagram.com/donavan_adu" // Replace with actual Instagram URL
     },
     {
       role: "Team Member",
       name: "Team Member",
       title: "Coordinates BR!NK Summit and operational logistics",
       image: oneDog,
-      bio: "Creating seamless experiences for our community."
+      bio: "Creating seamless experiences for our community.",
+      linkedin: null,
+      instagram: null
     }
   ];
 
@@ -59,22 +72,31 @@ const Teams = () => {
         ? "bg-[#1E3A5F] text-white" 
         : "bg-white text-[#2C2C2C]"
     }`}>
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-10"
-          onError={(e) => {
-            e.target.style.display = 'none';
-          }}
-        >
-          <source src="https://videos.pexels.com/video-files/3045163/3045163-hd_1920_1080_30fps.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-white/90"></div>
+      {/* Top Section Image */}
+      <div className="relative h-64 md:h-96 w-full overflow-hidden">
+        <div className={`absolute inset-0 ${
+          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
+        }`}>
+          <img 
+            src="/assets/Headshots09-01-25-29.jpg" 
+            alt="Our Team" 
+            className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
+        }`}>
+          <h1 className={`text-4xl md:text-6xl font-bold ${
+            isDarkMode ? "text-white" : "text-[#1E3A5F]"
+          }`}>
+            Our <span className="text-[#D4AF37]">Team</span>
+          </h1>
+        </div>
       </div>
+
       <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
         <motion.div
           initial="hidden"
@@ -83,13 +105,7 @@ const Teams = () => {
         >
           {/* Page Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              Our <span className="text-[#D4AF37]">Team</span>
-            </h1>
-            <div className="w-24 h-1 mx-auto bg-[#D4AF37]"></div>
-            <p className={`text-lg mt-6 max-w-2xl mx-auto ${
+            <p className={`text-lg max-w-2xl mx-auto ${
               isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
             }`}>
               Meet the passionate individuals driving BR!NK's mission to empower the next generation.
@@ -125,9 +141,34 @@ const Teams = () => {
                 <p className="text-sm mb-3 text-center text-white/80">
                   {member.title}
                 </p>
-                <p className="text-sm text-center text-white/70 italic">
+                <p className="text-sm text-center text-white/70 italic mb-4">
                   {member.bio}
                 </p>
+                {/* Social Links */}
+                {(member.linkedin || member.instagram) && (
+                  <div className="flex justify-center space-x-4 mt-4">
+                    {member.linkedin && (
+                      <a 
+                        href={member.linkedin} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-white/80 hover:text-[#D4AF37] transition-colors"
+                      >
+                        <Linkedin size={20} />
+                      </a>
+                    )}
+                    {member.instagram && (
+                      <a 
+                        href={member.instagram} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-white/80 hover:text-[#D4AF37] transition-colors"
+                      >
+                        <Instagram size={20} />
+                      </a>
+                    )}
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>

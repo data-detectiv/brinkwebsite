@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Target, Eye, TrendingUp, Users, Shield, AlertCircle } from "lucide-react";
+import { Target, Eye, TrendingUp, Users, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { containerVariants, itemVariants } from "../utils/helper";
 
@@ -34,28 +35,6 @@ const About = () => {
     }
   ];
 
-  const problems = [
-    {
-      icon: AlertCircle,
-      title: "Identity Confusion",
-      description: "Unsure who they are in a culture of comparison."
-    },
-    {
-      icon: Target,
-      title: "Purpose Deficit",
-      description: "School teaches skills, not meaning or mission."
-    },
-    {
-      icon: Users,
-      title: "Disconnection",
-      description: "Digital connectivity without real relationships."
-    },
-    {
-      icon: TrendingUp,
-      title: "Leadership Gap",
-      description: "Lacking models and tools for leading with impact."
-    }
-  ];
 
   return (
     <div className={`min-h-screen pt-20 relative overflow-hidden transition-colors ${
@@ -63,37 +42,37 @@ const About = () => {
         ? "bg-[#1E3A5F] text-white" 
         : "bg-white text-[#2C2C2C]"
     }`}>
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-10"
-          onError={(e) => {
-            e.target.style.display = 'none';
-          }}
-        >
-          <source src="https://videos.pexels.com/video-files/3045163/3045163-hd_1920_1080_30fps.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-white/90"></div>
+      {/* Top Section Image */}
+      <div className="relative h-64 md:h-96 w-full overflow-hidden">
+        <div className={`absolute inset-0 ${
+          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
+        }`}>
+          <img 
+            src="/assets/brink_logo.jpg" 
+            alt="About BR!NK" 
+            className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
+        }`}>
+          <h1 className={`text-4xl md:text-6xl font-bold ${
+            isDarkMode ? "text-white" : "text-[#1E3A5F]"
+          }`}>
+            About <span className="text-[#D4AF37]">BR!NK</span>
+          </h1>
+        </div>
       </div>
+
       <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          {/* Page Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              About <span className="text-[#D4AF37]">BR!NK</span>
-            </h1>
-            <div className="w-24 h-1 mx-auto bg-[#D4AF37]"></div>
-          </motion.div>
 
           {/* Mission */}
           <motion.div variants={itemVariants} className="mb-16">
@@ -137,45 +116,6 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* The Problem */}
-          <motion.div variants={itemVariants} className="mb-16">
-            <h2 className={`text-4xl font-semibold text-center mb-8 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              The Problem
-            </h2>
-            <p className={`text-lg text-center mb-8 max-w-3xl mx-auto ${
-              isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
-            }`}>
-              Many college/high-school students today feel lost, unmotivated, and unprepared for real life.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {problems.map((problem, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className={`p-6 rounded-xl border ${
-                    isDarkMode 
-                      ? "bg-[#2C2C2C] border-[#D4AF37]/30" 
-                      : "bg-[#808080]/10 border-[#808080]/30"
-                  }`}
-                >
-                  <problem.icon className={`w-10 h-10 mb-4 ${
-                    isDarkMode ? "text-[#D4AF37]" : "text-[#1E3A5F]"
-                  }`} />
-                  <h3 className={`text-xl font-semibold mb-2 ${
-                    isDarkMode ? "text-white" : "text-[#1E3A5F]"
-                  }`}>
-                    {problem.title}
-                  </h3>
-                  <p className={isDarkMode ? "text-white/80" : "text-[#2C2C2C]"}>
-                    {problem.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
           {/* Core Values */}
           <motion.div variants={itemVariants}>
             <h2 className={`text-4xl font-semibold text-center mb-12 ${
@@ -203,6 +143,61 @@ const About = () => {
                   </p>
                 </motion.div>
               ))}
+            </div>
+          </motion.div>
+
+          {/* Teams and Board Section */}
+          <motion.div variants={itemVariants} className="mt-16">
+            <h2 className={`text-4xl font-semibold text-center mb-12 ${
+              isDarkMode ? "text-white" : "text-[#1E3A5F]"
+            }`}>
+              Our Organization
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Link to="/teams">
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className={`p-8 rounded-2xl border-2 cursor-pointer ${
+                    isDarkMode 
+                      ? "bg-gradient-to-br from-[#2C2C2C] to-[#1E3A5F] border-[#D4AF37] text-white" 
+                      : "bg-gradient-to-br from-[#1E3A5F] to-[#2C2C2C] text-white border-[#D4AF37]"
+                  }`}
+                >
+                  <Users className="w-12 h-12 mb-4 text-[#D4AF37]" />
+                  <h3 className="text-2xl font-semibold mb-3">Our Team</h3>
+                  <p className="text-white/90 leading-relaxed">
+                    Meet the passionate individuals driving BR!NK's mission to empower the next generation.
+                  </p>
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="mt-4 text-[#D4AF37] font-semibold uppercase tracking-wider text-sm"
+                  >
+                    Learn More →
+                  </motion.div>
+                </motion.div>
+              </Link>
+              <Link to="/board">
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className={`p-8 rounded-2xl border-2 cursor-pointer ${
+                    isDarkMode 
+                      ? "bg-gradient-to-br from-[#2C2C2C] to-[#1E3A5F] border-[#D4AF37] text-white" 
+                      : "bg-gradient-to-br from-[#1E3A5F] to-[#2C2C2C] text-white border-[#D4AF37]"
+                  }`}
+                >
+                  <Shield className="w-12 h-12 mb-4 text-[#D4AF37]" />
+                  <h3 className="text-2xl font-semibold mb-3">Board of Directors</h3>
+                  <p className="text-white/90 leading-relaxed">
+                    Learn about our leadership and governance structure.
+                  </p>
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="mt-4 text-[#D4AF37] font-semibold uppercase tracking-wider text-sm"
+                  >
+                    Learn More →
+                  </motion.div>
+                </motion.div>
+              </Link>
             </div>
           </motion.div>
         </motion.div>

@@ -7,18 +7,20 @@ import {
     Sun,
     Moon,
     Menu,
-    X
+    X,
+    ChevronDown
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 // Logo - using public folder path
 // Logo should be placed at: public/assets/brink-logo.jpg
-const BRINK_LOGO = '/assets/brink-logo.jpg';
+const BRINK_LOGO = '/assets/brink_logo.jpg';
 
 
 const Navbar = () => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path) => {
@@ -27,13 +29,16 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
     { name: "Programs", path: "/programs" },
     { name: "Impact", path: "/impact" },
-    { name: "Teams", path: "/teams" },
-    { name: "Board", path: "/board" },
     { name: "Get Involved", path: "/get-involved" },
     { name: "Contact", path: "/contact" }
+  ];
+
+  const aboutSubItems = [
+    { name: "About", path: "/about" },
+    { name: "Teams", path: "/teams" },
+    { name: "Board", path: "/board" }
   ];
 
   return <motion.nav 
@@ -66,7 +71,77 @@ const Navbar = () => {
 
         {/* desktop navigation */}
         <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
+            {/* Home Link */}
+            <Link to="/">
+                <motion.button
+                    whileHover={{ y: -2 }}
+                    className={`text-sm uppercase tracking-wider transition-colors font-medium ${
+                        isActive("/")
+                            ? "text-[#D4AF37]"
+                            : isDarkMode 
+                              ? "text-white/80 hover:text-[#D4AF37]" 
+                              : "text-[#2C2C2C] hover:text-[#1E3A5F]"
+                    }`}
+                >
+                    Home
+                </motion.button>
+            </Link>
+
+            {/* About Dropdown */}
+            <div 
+                className="relative"
+                onMouseEnter={() => setIsAboutDropdownOpen(true)}
+                onMouseLeave={() => setIsAboutDropdownOpen(false)}
+            >
+                <Link to="/about">
+                    <motion.button
+                        whileHover={{ y: -2 }}
+                        className={`text-sm uppercase tracking-wider transition-colors font-medium flex items-center space-x-1 ${
+                            isActive("/about") || isActive("/teams") || isActive("/board")
+                                ? "text-[#D4AF37]"
+                                : isDarkMode 
+                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  : "text-[#2C2C2C] hover:text-[#1E3A5F]"
+                        }`}
+                    >
+                        <span>About</span>
+                        <ChevronDown size={14} className={`transition-transform ${isAboutDropdownOpen ? 'rotate-180' : ''}`} />
+                    </motion.button>
+                </Link>
+                <AnimatePresence>
+                    {isAboutDropdownOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className={`absolute top-full left-0 mt-2 py-2 rounded-lg shadow-lg border min-w-[180px] ${
+                                isDarkMode 
+                                    ? "bg-[#1E3A5F] border-[#D4AF37]/30" 
+                                    : "bg-white border-[#808080]/30"
+                            }`}
+                        >
+                            {aboutSubItems.map((item) => (
+                                <Link key={item.name} to={item.path}>
+                                    <motion.div
+                                        whileHover={{ x: 5 }}
+                                        className={`px-4 py-2 text-sm uppercase tracking-wider transition-colors font-medium ${
+                                            isActive(item.path)
+                                                ? "text-[#D4AF37]"
+                                                : isDarkMode 
+                                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                                  : "text-[#2C2C2C] hover:text-[#1E3A5F]"
+                                        }`}
+                                    >
+                                        {item.name}
+                                    </motion.div>
+                                </Link>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {navItems.filter(item => item.name !== "Home").map((item) => (
                 <Link key={item.name} to={item.path}>
                     <motion.button
                         whileHover={{ y: -2 }}
@@ -138,7 +213,66 @@ const Navbar = () => {
                     : "bg-white border-[#808080]/30"
                 }`}
             >
-                {navItems.map((item) => (
+                {/* Home Link */}
+                <Link to="/" onClick={() => setIsMenuOpen(false)}>
+                    <motion.button
+                        whileHover={{ x: 5}}
+                        className={`block w-full text-left py-2 text-sm uppercase tracking-wider transition-colors font-medium ${
+                            isActive("/")
+                                ? "text-[#D4AF37]"
+                                : isDarkMode 
+                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  : "text-[#2C2C2C] hover:text-[#1E3A5F]"
+                        }`}
+                    >
+                        Home
+                    </motion.button>
+                </Link>
+
+                {/* About with submenu in mobile */}
+                <div className="mb-2">
+                    <button
+                        onClick={() => setIsAboutDropdownOpen(!isAboutDropdownOpen)}
+                        className={`w-full text-left py-2 text-sm uppercase tracking-wider transition-colors font-medium flex items-center justify-between ${
+                            isActive("/about") || isActive("/teams") || isActive("/board")
+                                ? "text-[#D4AF37]"
+                                : isDarkMode 
+                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  : "text-[#2C2C2C] hover:text-[#1E3A5F]"
+                        }`}
+                    >
+                        <span>About</span>
+                        <ChevronDown size={14} className={`transition-transform ${isAboutDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    <AnimatePresence>
+                        {isAboutDropdownOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="pl-4 mt-2 space-y-1"
+                            >
+                                {aboutSubItems.map((item) => (
+                                    <Link key={item.name} to={item.path} onClick={() => setIsMenuOpen(false)}>
+                                        <motion.button
+                                            whileHover={{ x: 5}}
+                                            className={`block w-full text-left py-2 text-sm uppercase tracking-wider transition-colors font-medium ${
+                                                isActive(item.path)
+                                                    ? "text-[#D4AF37]"
+                                                    : isDarkMode 
+                                                      ? "text-white/80 hover:text-[#D4AF37]" 
+                                                      : "text-[#2C2C2C] hover:text-[#1E3A5F]"
+                                            }`}
+                                        >
+                                            {item.name}
+                                        </motion.button>
+                                    </Link>
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+                {navItems.filter(item => item.name !== "Home").map((item) => (
                     <Link key={item.name} to={item.path} onClick={() => setIsMenuOpen(false)}>
                         <motion.button
                             whileHover={{ x: 5}}

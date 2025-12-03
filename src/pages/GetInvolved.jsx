@@ -51,21 +51,29 @@ const GetInvolved = () => {
         ? "bg-[#1E3A5F] text-white" 
         : "bg-white text-[#2C2C2C]"
     }`}>
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-10"
-          onError={(e) => {
-            e.target.style.display = 'none';
-          }}
-        >
-          <source src="https://videos.pexels.com/video-files/3045163/3045163-hd_1920_1080_30fps.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-white/90"></div>
+      {/* Top Section Image */}
+      <div className="relative h-64 md:h-96 w-full overflow-hidden">
+        <div className={`absolute inset-0 ${
+          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
+        }`}>
+          <img 
+            src="/assets/brink_logo.jpg" 
+            alt="Get Involved" 
+            className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
+        }`}>
+          <h1 className={`text-4xl md:text-6xl font-bold ${
+            isDarkMode ? "text-white" : "text-[#1E3A5F]"
+          }`}>
+            Get <span className="text-[#D4AF37]">Involved</span>
+          </h1>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
@@ -76,13 +84,7 @@ const GetInvolved = () => {
         >
           {/* Page Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              Get <span className="text-[#D4AF37]">Involved</span>
-            </h1>
-            <div className="w-24 h-1 mx-auto bg-[#D4AF37]"></div>
-            <p className={`text-lg mt-6 max-w-2xl mx-auto ${
+            <p className={`text-lg max-w-2xl mx-auto ${
               isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
             }`}>
               Join us in empowering the next generation. There are many ways to make an impact.
@@ -103,7 +105,7 @@ const GetInvolved = () => {
                 }`}
               >
                 <div className="p-4 rounded-xl w-fit mb-4 bg-[#D4AF37]/20 border-2 border-[#D4AF37]">
-                  <option.icon className="w-8 h-8 text-[#1E3A5F]" />
+                  <option.icon className="w-8 h-8 text-[#D4AF37]" />
                 </div>
                 <h2 className={`text-2xl font-semibold mb-3 ${
                   isDarkMode ? "text-white" : "text-[#1E3A5F]"

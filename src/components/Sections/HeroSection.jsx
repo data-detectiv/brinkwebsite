@@ -39,13 +39,15 @@ import {
     return (
       <div className="min-h-screen relative overflow-hidden bg-[#1E3A5F] text-white">
   
-        {/* ⭐ YouTube Fullscreen Background ⭐ */}
+        {/* ⭐ YouTube Fullscreen Background - Video with mr Jeff ⭐ */}
 <div className="absolute inset-0 z-0 overflow-hidden">
   <div className="absolute inset-0 w-full h-full">
+    {/* Replace VIDEO_ID with the actual YouTube video ID featuring mr Jeff */}
     <iframe
       className="absolute top-1/2 left-1/2 w-[120%] h-[120%] -translate-x-1/2 -translate-y-1/2"
-      src="https://www.youtube.com/embed/r0430XuSxUY?autoplay=1&mute=1&controls=0&loop=1&playlist=r0430XuSxUY&modestbranding=1&showinfo=0&playsinline=1"
-      title="YouTube background"
+      src="https://youtube.com/embed/TDnkcjme0lg?autoplay=1&mute=1&controls=0&loop=1&playlist=TDnkcjme0lg&modestbranding=1&showinfo=0&playsinline=1"
+      // src="https://www.youtube.com/embed/r0430XuSxUY?autoplay=1&mute=1&controls=0&loop=1&playlist=r0430XuSxUY&modestbranding=1&showinfo=0&playsinline=1"
+      title="YouTube background - BR!NK with mr Jeff"
       frameBorder="0"
       allow="autoplay; fullscreen"
     ></iframe>
@@ -97,7 +99,7 @@ import {
                 variants={itemVariants}
                 className="text-lg md:text-xl text-white/90 mb-8 max-w-3xl mx-auto font-light leading-relaxed"
               >
-                BR!NK empowers college/high-school students to live with clarity, purpose,
+                BR!NK empowers college or high-school students to live with clarity, purpose,
                 and leadership. We provide mentorship, skill-based learning, and
                 transformational experiences that help individuals discover who they are
                 and lead meaningful change.
