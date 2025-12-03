@@ -130,9 +130,10 @@ const Impact = () => {
               <div className="relative overflow-hidden">
                 {/* First row - sliding left */}
                 <motion.div
-                  className="flex gap-4 p-4"
+                  className="flex gap-2 md:gap-4 p-2 md:p-4"
+                  style={{ width: 'max-content' }}
                   animate={{
-                    x: [0, -50 * selectedImages.length],
+                    x: ['0%', '-50%'],
                   }}
                   transition={{
                     duration: 30,
@@ -143,7 +144,7 @@ const Impact = () => {
                   {[...selectedImages, ...selectedImages].map((image, index) => (
                     <motion.div
                       key={`row1-${index}`}
-                      className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden"
+                      className="relative flex-shrink-0 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 rounded-lg overflow-hidden"
                       whileHover={{ 
                         scale: 1.1, 
                         zIndex: 50,
@@ -165,9 +166,10 @@ const Impact = () => {
                 
                 {/* Second row - sliding right */}
                 <motion.div
-                  className="flex gap-4 p-4"
+                  className="flex gap-2 md:gap-4 p-2 md:p-4"
+                  style={{ width: 'max-content' }}
                   animate={{
-                    x: [-50 * selectedImages.length, 0],
+                    x: ['-50%', '0%'],
                   }}
                   transition={{
                     duration: 35,
@@ -178,7 +180,7 @@ const Impact = () => {
                   {[...selectedImages, ...selectedImages].map((image, index) => (
                     <motion.div
                       key={`row2-${index}`}
-                      className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden"
+                      className="relative flex-shrink-0 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 rounded-lg overflow-hidden"
                       whileHover={{ 
                         scale: 1.1, 
                         zIndex: 50,
@@ -200,9 +202,10 @@ const Impact = () => {
 
                 {/* Third row - sliding left (faster) */}
                 <motion.div
-                  className="flex gap-4 p-4"
+                  className="flex gap-2 md:gap-4 p-2 md:p-4"
+                  style={{ width: 'max-content' }}
                   animate={{
-                    x: [0, -50 * selectedImages.length],
+                    x: ['0%', '-50%'],
                   }}
                   transition={{
                     duration: 25,
@@ -213,7 +216,7 @@ const Impact = () => {
                   {[...selectedImages, ...selectedImages].map((image, index) => (
                     <motion.div
                       key={`row3-${index}`}
-                      className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden"
+                      className="relative flex-shrink-0 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 rounded-lg overflow-hidden"
                       whileHover={{ 
                         scale: 1.1, 
                         zIndex: 50,
