@@ -12,9 +12,21 @@ const Contact = () => {
   const [socialStats, setSocialStats] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: null, message: "" });
+  const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
-    getSocialStats().then(setSocialStats);
+    const fetchStats = async () => {
+      setIsLoadingStats(true);
+      try {
+        const stats = await getSocialStats();
+        setSocialStats(stats);
+      } catch (error) {
+        console.error("Error loading social stats:", error);
+      } finally {
+        setIsLoadingStats(false);
+      }
+    };
+    fetchStats();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -289,7 +301,11 @@ const Contact = () => {
                       <p className={`text-lg font-semibold ${
                         isDarkMode ? "text-white" : "text-[#1E3A5F]"
                       }`}>
-                        {social.stat || "—"}
+                        {isLoadingStats ? (
+                          <span className="text-xs">Loading...</span>
+                        ) : (
+                          social.stat || "—"
+                        )}
                       </p>
                     </motion.a>
                   ))}

@@ -26,36 +26,59 @@ export const getSocialStats = async () => {
     
     if (youtubeApiKey) {
       try {
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=${youtubeChannelId.replace('@', '')}&key=${youtubeApiKey}`
-        );
-        const data = await response.json();
-        if (data.items && data.items[0]) {
-          stats.youtube.subscribers = formatNumber(parseInt(data.items[0].statistics.subscriberCount));
+        // Try with channel handle first (for @username)
+        let channelId = youtubeChannelId.replace('@', '');
+        let url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=${channelId}&key=${youtubeApiKey}`;
+        
+        let response = await fetch(url);
+        let data = await response.json();
+        
+        // If forUsername doesn't work, try with channel ID directly
+        if (!data.items || data.items.length === 0) {
+          // Try as channel ID
+          url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${youtubeApiKey}`;
+          response = await fetch(url);
+          data = await response.json();
+        }
+        
+        if (data.items && data.items[0] && data.items[0].statistics) {
+          const subscriberCount = parseInt(data.items[0].statistics.subscriberCount);
+          if (!isNaN(subscriberCount)) {
+            stats.youtube.subscribers = formatNumber(subscriberCount);
+          }
         }
       } catch (error) {
-        console.log("YouTube API error:", error);
+        console.error("YouTube API error:", error);
       }
     }
 
-    // Instagram Stats - requires Meta Graph API (complex setup)
-    // For now, using placeholder. To implement:
-    // 1. Create a Facebook App
-    // 2. Get access token
-    // 3. Use Graph API: GET /{ig-user-id}?fields=followers_count
+    // Instagram Stats - requires Meta Graph API
     const instagramAccessToken = import.meta.env.VITE_INSTAGRAM_ACCESS_TOKEN;
-    if (instagramAccessToken) {
-      // Implementation would go here
+    const instagramUserId = import.meta.env.VITE_INSTAGRAM_USER_ID;
+    
+    if (instagramAccessToken && instagramUserId) {
+      try {
+        const response = await fetch(
+          `https://graph.instagram.com/${instagramUserId}?fields=followers_count,media_count&access_token=${instagramAccessToken}`
+        );
+        const data = await response.json();
+        if (data.followers_count) {
+          stats.instagram.followers = formatNumber(parseInt(data.followers_count));
+        }
+      } catch (error) {
+        console.error("Instagram API error:", error);
+      }
     }
 
     // Twitter/X Stats - requires Twitter API v2
     const twitterBearerToken = import.meta.env.VITE_TWITTER_BEARER_TOKEN;
-    const twitterUsername = "BGodbless25";
+    const twitterUsername = import.meta.env.VITE_TWITTER_USERNAME || "BGodbless25";
+    
     if (twitterBearerToken) {
       try {
-        // First get user ID
+        // Get user with metrics in one call
         const userResponse = await fetch(
-          `https://api.twitter.com/2/users/by/username/${twitterUsername}`,
+          `https://api.twitter.com/2/users/by/username/${twitterUsername}?user.fields=public_metrics`,
           {
             headers: {
               'Authorization': `Bearer ${twitterBearerToken}`
@@ -63,36 +86,82 @@ export const getSocialStats = async () => {
           }
         );
         const userData = await userResponse.json();
-        if (userData.data) {
-          const userResponse2 = await fetch(
-            `https://api.twitter.com/2/users/${userData.data.id}?user.fields=public_metrics`,
-            {
-              headers: {
-                'Authorization': `Bearer ${twitterBearerToken}`
-              }
-            }
-          );
-          const metricsData = await userResponse2.json();
-          if (metricsData.data) {
-            stats.twitter.followers = formatNumber(metricsData.data.public_metrics?.followers_count);
+        if (userData.data && userData.data.public_metrics) {
+          const followersCount = userData.data.public_metrics.followers_count;
+          if (followersCount) {
+            stats.twitter.followers = formatNumber(parseInt(followersCount));
           }
         }
       } catch (error) {
-        console.log("Twitter API error:", error);
+        console.error("Twitter API error:", error);
       }
     }
 
     // LinkedIn Stats - requires LinkedIn API (complex OAuth)
-    // For now, using placeholder
+    // Note: LinkedIn API requires server-side OAuth, cannot be done client-side
+    const linkedinAccessToken = import.meta.env.VITE_LINKEDIN_ACCESS_TOKEN;
+    const linkedinCompanyId = import.meta.env.VITE_LINKEDIN_COMPANY_ID;
+    
+    if (linkedinAccessToken && linkedinCompanyId) {
+      try {
+        const response = await fetch(
+          `https://api.linkedin.com/v2/organizations/${linkedinCompanyId}?projection=(id,name,numFollowers)`,
+          {
+            headers: {
+              'Authorization': `Bearer ${linkedinAccessToken}`
+            }
+          }
+        );
+        const data = await response.json();
+        if (data.numFollowers) {
+          stats.linkedin.followers = formatNumber(parseInt(data.numFollowers));
+        }
+      } catch (error) {
+        console.error("LinkedIn API error:", error);
+      }
+    }
 
     // Spotify Stats - requires Spotify Web API
+    // Note: This requires OAuth flow which is complex for client-side
+    // For now, you'd need a backend service to handle this
     const spotifyClientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const spotifyClientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
-    if (spotifyClientId && spotifyClientSecret) {
-      // Implementation would require OAuth flow
+    const spotifyShowId = import.meta.env.VITE_SPOTIFY_SHOW_ID;
+    
+    if (spotifyClientId && spotifyClientSecret && spotifyShowId) {
+      try {
+        // Get access token first
+        const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${btoa(`${spotifyClientId}:${spotifyClientSecret}`)}`
+          },
+          body: 'grant_type=client_credentials'
+        });
+        
+        const tokenData = await tokenResponse.json();
+        if (tokenData.access_token) {
+          const showResponse = await fetch(
+            `https://api.spotify.com/v1/shows/${spotifyShowId}`,
+            {
+              headers: {
+                'Authorization': `Bearer ${tokenData.access_token}`
+              }
+            }
+          );
+          const showData = await showResponse.json();
+          if (showData.followers && showData.followers.total) {
+            stats.spotify.listeners = formatNumber(parseInt(showData.followers.total));
+          }
+        }
+      } catch (error) {
+        console.error("Spotify API error:", error);
+      }
     }
 
     // TikTok Stats - requires TikTok API (limited availability)
+    // TikTok API is very restricted and requires business verification
     // For now, using placeholder
 
   } catch (error) {

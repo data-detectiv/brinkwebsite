@@ -36,7 +36,7 @@ const Navbar = () => {
   ];
 
   const aboutSubItems = [
-    { name: "About", path: "/about" },
+    { name: "Mission & Vision", path: "/about" },
     { name: "Teams", path: "/teams" },
     { name: "Board", path: "/board" }
   ];

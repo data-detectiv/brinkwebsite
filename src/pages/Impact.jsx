@@ -29,7 +29,7 @@ const Impact = () => {
     { number: "10,000+", label: "Students Reached by Year 5", icon: Users, description: "Through digital and in-person programs" },
     { number: "10+", label: "College/High-School Chapters", icon: Target, description: "Mentorship circles launched" },
     { number: "100+", label: "Mentors & Leaders", icon: Heart, description: "Guiding students worldwide" },
-    { number: "Annual", label: "BR!NK Leadership Summit", icon: Award, description: "Leading youth purpose conference" },
+    // { number: "Annual", label: "BR!NK Leadership Summit", icon: Award, description: "Leading youth purpose conference" },
   ];
 
   const studentStories = [
@@ -93,7 +93,36 @@ const Impact = () => {
             <h2 className={`text-3xl font-semibold text-center mb-12 ${
               isDarkMode ? "text-white" : "text-[#1E3A5F]"
             }`}>
-              Our Vision for Growth
+              Current Achievements
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {impactGoals.map((goal, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="p-8 rounded-2xl bg-gradient-to-br from-[#1E3A5F] to-[#2C2C2C] text-white shadow-lg"
+                >
+                  <goal.icon className="w-12 h-12 mb-4 text-[#D4AF37]" />
+                  <div className="text-4xl font-bold mb-2 text-[#D4AF37]">
+                    {goal.number}
+                  </div>
+                  <div className="text-xl font-semibold mb-2">
+                    {goal.label}
+                  </div>
+                  <div className="text-white/80 text-sm">
+                    {goal.description}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Impact Goals */}
+          <motion.div variants={itemVariants} className="mb-16">
+            <h2 className={`text-3xl font-semibold text-center mb-12 ${
+              isDarkMode ? "text-white" : "text-[#1E3A5F]"
+            }`}>
+              Future Goals
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {impactGoals.map((goal, index) => (
