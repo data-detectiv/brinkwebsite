@@ -41,32 +41,40 @@ const Resources = () => {
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${
-      isDarkMode 
-        ? "bg-[#1E3A5F] text-white" 
+        isDarkMode 
+        ? "bg-[#0F0F0F] text-[#F5F5F5]" 
         : "bg-white text-[#2C2C2C]"
     } pt-20`}>
-      {/* Top Section Image */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden">
-        <div className={`absolute inset-0 ${
-          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
-        }`}>
+      {/* Top Section Banner - With Picture */}
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+        <div className="absolute inset-0">
           <img 
-            src="/assets/brink_logo.jpg" 
+            src="/assets/IMG-20251125-WA0013.jpg" 
             alt="Resource Center" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
           />
+          {/* Lighter overlay for clearer image while maintaining text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
         </div>
-        <div className={`absolute inset-0 flex items-center justify-center ${
-          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
-        }`}>
-          <h1 className={`text-4xl md:text-6xl font-bold ${
-            isDarkMode ? "text-white" : "text-[#1E3A5F]"
-          }`}>
-            Resource <span className="text-[#D4AF37]">Center</span>
-          </h1>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center relative z-10"
+          >
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 drop-shadow-2xl text-white`}>
+              Resource <span className="text-[#D4AF37] drop-shadow-lg">Center</span>
+            </h1>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto drop-shadow-lg text-white`}>
+              Free resources to support your journey of growth and purpose
+            </p>
+          </motion.div>
         </div>
       </div>
 
@@ -94,7 +102,7 @@ const Resources = () => {
                 whileHover={{ y: -5, scale: 1.02 }}
                 className={`p-8 rounded-2xl border-2 flex flex-col ${
                   isDarkMode 
-                    ? "bg-[#1E3A5F] border-[#D4AF37]/30" 
+                    ? "bg-[#1A1A1A] border-[#D4AF37]/30" 
                     : "bg-white border-[#1E3A5F]"
                 }`}
               >
@@ -112,7 +120,7 @@ const Resources = () => {
                   {resource.title}
                 </h2>
                 <p className={`mb-6 flex-grow leading-relaxed ${
-                  isDarkMode ? "text-white/80" : "text-[#2C2C2C]"
+                  isDarkMode ? "text-[#B0B0B0]" : "text-[#2C2C2C]"
                 }`}>
                   {resource.description}
                 </p>

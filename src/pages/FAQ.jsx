@@ -45,32 +45,40 @@ const FAQ = () => {
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${
-      isDarkMode 
-        ? "bg-[#1E3A5F] text-white" 
+        isDarkMode 
+        ? "bg-[#0F0F0F] text-[#F5F5F5]" 
         : "bg-white text-[#2C2C2C]"
     } pt-20`}>
-      {/* Top Section Image */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden">
-        <div className={`absolute inset-0 ${
-          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
-        }`}>
+      {/* Top Section Banner - With Picture */}
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+        <div className="absolute inset-0">
           <img 
-            src="/assets/brink_logo.jpg" 
+            src="/assets/IMG-20251125-WA0015.jpg" 
             alt="FAQ" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
           />
+          {/* Lighter overlay for clearer image while maintaining text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
         </div>
-        <div className={`absolute inset-0 flex items-center justify-center ${
-          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
-        }`}>
-          <h1 className={`text-4xl md:text-6xl font-bold ${
-            isDarkMode ? "text-white" : "text-[#1E3A5F]"
-          }`}>
-            Frequently Asked <span className="text-[#D4AF37]">Questions</span>
-          </h1>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center relative z-10"
+          >
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 drop-shadow-2xl text-white`}>
+              Frequently Asked <span className="text-[#D4AF37] drop-shadow-lg">Questions</span>
+            </h1>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto drop-shadow-lg text-white`}>
+              Find answers to common questions about BR!NK
+            </p>
+          </motion.div>
         </div>
       </div>
 
@@ -85,7 +93,7 @@ const FAQ = () => {
             <div className="flex items-center justify-center mb-4">
               <HelpCircle className="w-12 h-12 text-[#D4AF37]" />
             </div>
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
+            <h1 className={`text-3xl md:text-4xl font-bold mb-4 ${
               isDarkMode ? "text-white" : "text-[#1E3A5F]"
             }`}>
               Frequently Asked <span className="text-[#D4AF37]">Questions</span>
@@ -100,15 +108,15 @@ const FAQ = () => {
                 key={index}
                 variants={itemVariants}
                 className={`rounded-2xl overflow-hidden border-2 ${
-                  isDarkMode 
-                    ? "bg-[#1E3A5F] border-[#D4AF37]/30" 
-                    : "bg-white border-[#1E3A5F]"
+                    isDarkMode 
+                      ? "bg-[#1A1A1A] border-[#D4AF37]/30" 
+                      : "bg-white border-[#1E3A5F]"
                 }`}
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className={`w-full p-6 flex items-center justify-between text-left transition-colors ${
-                    isDarkMode ? "hover:bg-[#2C2C2C]" : "hover:bg-[#D4AF37]/5"
+                    isDarkMode ? "hover:bg-[#242424]" : "hover:bg-[#D4AF37]/5"
                   }`}
                 >
                   <h3 className={`text-lg font-semibold pr-4 ${
@@ -135,7 +143,7 @@ const FAQ = () => {
                       className="overflow-hidden"
                     >
                       <div className={`p-6 pt-0 leading-relaxed ${
-                        isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
+                        isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
                       }`}>
                         {faq.answer}
                       </div>

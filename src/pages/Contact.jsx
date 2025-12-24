@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Mail, Instagram, Twitter, Linkedin, Youtube, Music, MessageCircle } from "lucide-react";
+import { Mail, Instagram, Twitter, Linkedin, Youtube, Music, MessageCircle, Phone, MapPin, Send } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { containerVariants, itemVariants } from "../utils/helper";
 import { getSocialStats } from "../utils/socialStats";
@@ -15,11 +15,24 @@ const Contact = () => {
   const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
+    // Initialize EmailJS
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    if (publicKey && publicKey !== "YOUR_PUBLIC_KEY") {
+      emailjs.init(publicKey);
+    }
+
+    // Fetch social stats
     const fetchStats = async () => {
       setIsLoadingStats(true);
       try {
         const stats = await getSocialStats();
+        console.log("Social stats fetched:", stats);
         setSocialStats(stats);
+        
+        // Log Twitter stats specifically for debugging
+        if (stats.twitter) {
+          console.log("Twitter stats:", stats.twitter);
+        }
       } catch (error) {
         console.error("Error loading social stats:", error);
       } finally {
@@ -36,36 +49,61 @@ const Contact = () => {
 
     try {
       // EmailJS service configuration
-      // Replace these with your actual EmailJS service ID, template ID, and public key
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
       // Check if EmailJS is properly configured
-      if (serviceId === "YOUR_SERVICE_ID" || templateId === "YOUR_TEMPLATE_ID" || publicKey === "YOUR_PUBLIC_KEY") {
+      if (!serviceId || !templateId || !publicKey || 
+          serviceId === "YOUR_SERVICE_ID" || 
+          templateId === "YOUR_TEMPLATE_ID" || 
+          publicKey === "YOUR_PUBLIC_KEY") {
         throw new Error("EmailJS not configured");
       }
 
-      await emailjs.send(serviceId, templateId, {
+      const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
         message: formData.message,
-        to_email: "thebrinkpodcastglobal@gmail.com"
-      }, publicKey);
+        to_email: "thebrinkpodcastglobal@gmail.com",
+        reply_to: formData.email
+      };
 
-      setSubmitStatus({ 
-        type: "success", 
-        message: "Message sent successfully! We'll get back to you soon." 
-      });
-      setFormData({ name: "", email: "", message: "" });
+      // Send email using EmailJS
+      const response = await emailjs.send(serviceId, templateId, templateParams);
+
+      if (response.status === 200 || response.text === "OK") {
+        setSubmitStatus({ 
+          type: "success", 
+          message: "Message sent successfully! We'll get back to you soon." 
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error("Failed to send message");
+      }
     } catch (error) {
       console.error("EmailJS error:", error);
-      // Fallback to mailto if EmailJS fails
-      window.location.href = `mailto:thebrinkpodcastglobal@gmail.com?subject=Contact from ${formData.name}&body=${encodeURIComponent(formData.message)}`;
-      setSubmitStatus({ 
-        type: "info", 
-        message: "Opening your email client to send the message." 
-      });
+      
+      // Enhanced fallback: Try mailto link
+      const subject = encodeURIComponent(`Contact from ${formData.name}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      );
+      const mailtoLink = `mailto:thebrinkpodcastglobal@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Try to open mailto, but also show error message
+      try {
+        window.location.href = mailtoLink;
+        setSubmitStatus({ 
+          type: "info", 
+          message: "EmailJS is not configured. Opening your email client to send the message. Please configure EmailJS in your .env file for automatic email delivery." 
+        });
+      } catch (mailtoError) {
+        setSubmitStatus({ 
+          type: "error", 
+          message: "Unable to send message. Please email us directly at thebrinkpodcastglobal@gmail.com or configure EmailJS in your environment variables." 
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -109,54 +147,106 @@ const Contact = () => {
 
   return (
     <div className={`min-h-screen pt-20 relative overflow-hidden transition-colors ${
-      isDarkMode 
-        ? "bg-[#1E3A5F] text-white" 
+        isDarkMode 
+        ? "bg-[#0F0F0F] text-[#F5F5F5]" 
         : "bg-white text-[#2C2C2C]"
     }`}>
-      {/* Top Section Image */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden">
-        <div className={`absolute inset-0 ${
-          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
-        }`}>
+      {/* Top Section Banner - Contact Focused */}
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+        <div className="absolute inset-0">
           <img 
-            src="/assets/brink_logo.jpg" 
+            src="/assets/IMG-20251125-WA0011.jpg" 
             alt="Contact Us" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
           />
+          {/* Lighter overlay for clearer image while maintaining text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
         </div>
-        <div className={`absolute inset-0 flex items-center justify-center ${
-          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
-        }`}>
-          <h1 className={`text-4xl md:text-6xl font-bold ${
-            isDarkMode ? "text-white" : "text-[#1E3A5F]"
-          }`}>
-            Get in <span className="text-[#D4AF37]">Touch</span>
-          </h1>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center relative z-10"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+              className="mb-4 md:mb-6"
+            >
+              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#D4AF37]/20 border-4 border-[#D4AF37] backdrop-blur-sm">
+                <Mail className="w-8 h-8 md:w-10 md:h-10 text-[#D4AF37]" />
+              </div>
+            </motion.div>
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 drop-shadow-2xl text-white`}>
+              Contact <span className="text-[#D4AF37] drop-shadow-lg">Us</span>
+            </h1>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto drop-shadow-lg text-white mb-4`}>
+              We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mt-4">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className={`flex items-center space-x-2 ${isDarkMode ? "text-[#F5F5F5]" : "text-white/90"}`}
+              >
+                <Mail className="w-4 h-4 text-[#D4AF37]" />
+                <span className="text-xs sm:text-sm">thebrinkpodcastglobal@gmail.com</span>
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className={`flex items-center space-x-2 ${isDarkMode ? "text-[#F5F5F5]" : "text-white/90"}`}
+              >
+                <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
+                <span className="text-xs sm:text-sm">Send us a message below</span>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             {/* Contact Form */}
             <motion.div variants={itemVariants}>
-              <h2 className={`text-2xl font-semibold mb-6 ${
-                isDarkMode ? "text-white" : "text-[#1E3A5F]"
+              <div className="flex items-center space-x-3 mb-6">
+                <div className={`p-3 rounded-lg ${
+                  isDarkMode ? "bg-[#D4AF37]/20" : "bg-[#D4AF37]/10"
+                }`}>
+                  <Send className={`w-6 h-6 ${
+                    isDarkMode ? "text-[#D4AF37]" : "text-[#1E3A5F]"
+                  }`} />
+                </div>
+                <h2 className={`text-2xl font-semibold ${
+                  isDarkMode ? "text-white" : "text-[#1E3A5F]"
+                }`}>
+                  Send us a Message
+                </h2>
+              </div>
+              <p className={`text-sm mb-6 ${
+                isDarkMode ? "text-white/70" : "text-[#2C2C2C]"
               }`}>
-                Send us a Message
-              </h2>
+                Fill out the form below and we'll get back to you within 24-48 hours.
+              </p>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${
-                    isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
+                    isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
                   }`}>
                     Name
                   </label>
@@ -165,16 +255,16 @@ const Contact = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#D4AF37] ${
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-colors ${
                       isDarkMode 
-                        ? "bg-[#2C2C2C] border-[#D4AF37]/30 text-white" 
-                        : "bg-white border-[#808080] text-[#2C2C2C]"
+                        ? "bg-[#1A1A1A] border-[#D4AF37]/30 text-[#F5F5F5] placeholder-[#B0B0B0] hover:border-[#D4AF37]/50" 
+                        : "bg-white border-[#808080] text-[#2C2C2C] placeholder-[#808080] hover:border-[#1E3A5F]"
                     }`}
                   />
                 </div>
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${
-                    isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
+                    isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
                   }`}>
                     Email
                   </label>
@@ -183,16 +273,16 @@ const Contact = () => {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#D4AF37] ${
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-colors ${
                       isDarkMode 
-                        ? "bg-[#2C2C2C] border-[#D4AF37]/30 text-white" 
-                        : "bg-white border-[#808080] text-[#2C2C2C]"
+                        ? "bg-[#1A1A1A] border-[#D4AF37]/30 text-[#F5F5F5] placeholder-[#B0B0B0] hover:border-[#D4AF37]/50" 
+                        : "bg-white border-[#808080] text-[#2C2C2C] placeholder-[#808080] hover:border-[#1E3A5F]"
                     }`}
                   />
                 </div>
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${
-                    isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
+                    isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
                   }`}>
                     Message
                   </label>
@@ -201,10 +291,10 @@ const Contact = () => {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     required
                     rows={6}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#D4AF37] ${
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-colors ${
                       isDarkMode 
-                        ? "bg-[#2C2C2C] border-[#D4AF37]/30 text-white" 
-                        : "bg-white border-[#808080] text-[#2C2C2C]"
+                        ? "bg-[#1A1A1A] border-[#D4AF37]/30 text-[#F5F5F5] placeholder-[#B0B0B0] hover:border-[#D4AF37]/50" 
+                        : "bg-white border-[#808080] text-[#2C2C2C] placeholder-[#808080] hover:border-[#1E3A5F]"
                     }`}
                   />
                 </div>
@@ -252,7 +342,7 @@ const Contact = () => {
                         isDarkMode ? "text-white" : "text-[#1E3A5F]"
                       }`}>Email</p>
                       <a href="mailto:thebrinkpodcastglobal@gmail.com" className={`hover:text-[#D4AF37] transition-colors ${
-                        isDarkMode ? "text-white/80" : "text-[#2C2C2C]"
+                        isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
                       }`}>
                         thebrinkpodcastglobal@gmail.com
                       </a>
@@ -261,14 +351,19 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Social Media Stats */}
+              {/* Social Media Stats - Enhanced Display */}
               <div>
-                <h2 className={`text-2xl font-semibold mb-6 ${
+                <h2 className={`text-2xl font-semibold mb-4 md:mb-6 ${
                   isDarkMode ? "text-white" : "text-[#1E3A5F]"
                 }`}>
                   Connect With Us
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <p className={`text-sm mb-6 ${
+                  isDarkMode ? "text-[#B0B0B0]" : "text-[#2C2C2C]"
+                }`}>
+                  Follow us on social media and stay connected with our community
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
                   {socialLinks.map((social, index) => (
                     <motion.a
                       key={index}
@@ -276,10 +371,10 @@ const Contact = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ y: -3, scale: 1.02 }}
-                      className={`p-6 rounded-xl border-2 text-center shadow-md ${
-                        isDarkMode 
-                          ? "bg-[#2C2C2C] border-[#D4AF37] text-white" 
-                          : "bg-white border-[#1E3A5F]"
+                      className={`p-4 md:p-6 rounded-xl border-2 text-center shadow-md transition-all ${
+                      isDarkMode 
+                        ? "bg-[#1A1A1A] border-[#D4AF37]/30 hover:border-[#D4AF37] text-[#F5F5F5]" 
+                        : "bg-white border-[#1E3A5F]/30 hover:border-[#1E3A5F]"
                       }`}
                     >
                       {typeof social.icon === 'function' ? (
@@ -289,20 +384,20 @@ const Contact = () => {
                           <social.icon />
                         </div>
                       ) : (
-                        <social.icon className={`w-8 h-8 mx-auto mb-2 ${
+                        <social.icon className={`w-6 h-6 md:w-8 md:h-8 mx-auto mb-2 ${
                           isDarkMode ? "text-[#D4AF37]" : "text-[#1E3A5F]"
                         }`} />
                       )}
                       <p className={`text-xs uppercase tracking-wider mb-1 ${
-                        isDarkMode ? "text-white/60" : "text-[#808080]"
+                        isDarkMode ? "text-[#808080]" : "text-[#808080]"
                       }`}>
                         {social.label}
                       </p>
-                      <p className={`text-lg font-semibold ${
+                      <p className={`text-sm md:text-base font-semibold ${
                         isDarkMode ? "text-white" : "text-[#1E3A5F]"
                       }`}>
                         {isLoadingStats ? (
-                          <span className="text-xs">Loading...</span>
+                          <span className="text-xs animate-pulse">Loading...</span>
                         ) : (
                           social.stat || "—"
                         )}

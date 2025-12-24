@@ -12,20 +12,110 @@
   --color-mustard: #D4AF37;
   --color-white: #FFFFFF;
   --color-navy: #1E3A5F;
+  
+  /* Night Mode Colors */
+  --color-night-bg: #0F0F0F;
+  --color-night-surface: #1A1A1A;
+  --color-night-elevated: #242424;
+  --color-night-text: #F5F5F5;
+  --color-night-text-secondary: #B0B0B0;
 }
 
 @layer base {
   html {
     font-family: var(--font-display);
+    scroll-behavior: smooth;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.2;
   }
 
   body {
     background-color: #FFFFFF;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Improved dark mode readability */
+  .dark {
+    color-scheme: dark;
+  }
+
+  /* Better text contrast in dark mode */
+  .dark * {
+    color-scheme: dark;
+  }
+
+  /* Responsive typography */
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+    h2 {
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+  }
+
+  /* Improved focus states for accessibility */
+  *:focus-visible {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
+  }
+
+  /* Better image rendering */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Responsive video background for hero section */
+  .video-background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .video-background-iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
+    pointer-events: none;
+  }
+
+  /* For wide screens (landscape, desktop) - maintain aspect ratio while covering */
+  @media (min-aspect-ratio: 16/9) {
+    .video-background-iframe {
+      width: 177.78vh; /* Height-based width to maintain 16:9 */
+      height: 100vh;
+      min-width: 100vw; /* Ensure it covers width */
+    }
+  }
+
+  /* For tall screens (portrait mobile) - maintain aspect ratio while covering */
+  @media (max-aspect-ratio: 16/9) {
+    .video-background-iframe {
+      width: 100vw;
+      height: 56.25vw; /* Width-based height to maintain 16:9 */
+      min-height: 100vh; /* Ensure it covers height */
+    }
   }
 }
 

@@ -59,7 +59,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#1E3A5F] text-white border-t border-[#D4AF37]/30">
+    <footer className={`${isDarkMode ? "bg-[#0F0F0F] text-[#F5F5F5]" : "bg-[#1E3A5F] text-white"} border-t border-[#D4AF37]/30`}>
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Section */}
@@ -67,7 +67,7 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4 text-[#D4AF37]">
               BR!NK
             </h3>
-            <p className="text-sm text-white/80 mb-4">
+            <p className={`text-sm mb-4 ${isDarkMode ? "text-[#B0B0B0]" : "text-white/80"}`}>
               Empowering Growth, Leadership and Purpose in the Next Generation.
             </p>
             <div className="flex flex-wrap gap-2">
@@ -78,7 +78,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ y: -3, scale: 1.1 }}
-                  className="p-2 rounded-full transition-colors text-white/80 hover:text-[#D4AF37] hover:bg-white/10"
+                  className={`p-2 rounded-full transition-colors hover:text-[#D4AF37] hover:bg-white/10 ${isDarkMode ? "text-[#B0B0B0]" : "text-white/80"}`}
                   aria-label={social.label}
                 >
                   {typeof social.icon === 'function' ? (
@@ -101,7 +101,7 @@ const Footer = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="text-sm transition-colors text-white/80 hover:text-[#D4AF37]"
+                  className={`text-sm transition-colors hover:text-[#D4AF37] ${isDarkMode ? "text-[#B0B0B0]" : "text-white/80"}`}
                 >
                   {link.name}
                 </Link>
@@ -114,7 +114,7 @@ const Footer = () => {
             <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 text-[#D4AF37]">
               Contact
             </h4>
-            <div className="text-sm space-y-2 text-white/80">
+            <div className={`text-sm space-y-2 ${isDarkMode ? "text-[#B0B0B0]" : "text-white/80"}`}>
               <p>
                 <a href="mailto:thebrinkpodcastglobal@gmail.com" className="hover:text-[#D4AF37] transition-colors">
                 thebrinkpodcastglobal@gmail.com
@@ -127,7 +127,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-white/20 text-center text-sm text-white/60">
+        <div className={`mt-8 pt-8 border-t ${isDarkMode ? "border-[#242424] text-[#808080]" : "border-white/20 text-white/60"} text-center text-sm`}>
           <p>&copy; {new Date().getFullYear()} BR!NK. All rights reserved.</p>
         </div>
       </div>

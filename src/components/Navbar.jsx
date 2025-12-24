@@ -31,6 +31,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Programs", path: "/programs" },
     { name: "Impact", path: "/impact" },
+    { name: "Analytics", path: "/analytics" },
     { name: "Get Involved", path: "/get-involved" },
     { name: "Contact", path: "/contact" }
   ];
@@ -44,8 +45,8 @@ const Navbar = () => {
   return <motion.nav 
     style={{ opacity: 1 }}
     className={`fixed top-0 w-full z-50 px-6 py-4 backdrop-blur-md border-b shadow-sm transition-colors ${
-      isDarkMode 
-        ? "bg-[#1E3A5F]/95 border-[#D4AF37]/30" 
+        isDarkMode 
+        ? "bg-[#0F0F0F]/95 border-[#D4AF37]/30" 
         : "bg-white/95 border-[#808080]/30"
     }`}
   >
@@ -79,7 +80,7 @@ const Navbar = () => {
                         isActive("/")
                             ? "text-[#D4AF37]"
                             : isDarkMode 
-                              ? "text-white/80 hover:text-[#D4AF37]" 
+                              ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                               : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                     }`}
                 >
@@ -100,7 +101,7 @@ const Navbar = () => {
                             isActive("/about") || isActive("/teams") || isActive("/board")
                                 ? "text-[#D4AF37]"
                                 : isDarkMode 
-                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                   : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                         }`}
                     >
@@ -116,7 +117,7 @@ const Navbar = () => {
                             exit={{ opacity: 0, y: -10 }}
                             className={`absolute top-full left-0 mt-2 py-2 rounded-lg shadow-lg border min-w-[180px] ${
                                 isDarkMode 
-                                    ? "bg-[#1E3A5F] border-[#D4AF37]/30" 
+                                    ? "bg-[#1A1A1A] border-[#D4AF37]/30" 
                                     : "bg-white border-[#808080]/30"
                             }`}
                         >
@@ -128,7 +129,7 @@ const Navbar = () => {
                                             isActive(item.path)
                                                 ? "text-[#D4AF37]"
                                                 : isDarkMode 
-                                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                                  ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                                   : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                                         }`}
                                     >
@@ -149,7 +150,7 @@ const Navbar = () => {
                             isActive(item.path)
                                 ? "text-[#D4AF37]"
                                 : isDarkMode 
-                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                   : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                         }`}
                     >
@@ -221,7 +222,7 @@ const Navbar = () => {
                             isActive("/")
                                 ? "text-[#D4AF37]"
                                 : isDarkMode 
-                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                   : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                         }`}
                     >
@@ -237,7 +238,7 @@ const Navbar = () => {
                             isActive("/about") || isActive("/teams") || isActive("/board")
                                 ? "text-[#D4AF37]"
                                 : isDarkMode 
-                                  ? "text-white/80 hover:text-[#D4AF37]" 
+                                  ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                   : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                         }`}
                     >
@@ -260,7 +261,7 @@ const Navbar = () => {
                                                 isActive(item.path)
                                                     ? "text-[#D4AF37]"
                                                     : isDarkMode 
-                                                      ? "text-white/80 hover:text-[#D4AF37]" 
+                                                      ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                                       : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                                             }`}
                                         >
@@ -280,7 +281,7 @@ const Navbar = () => {
                                 isActive(item.path)
                                     ? "text-[#D4AF37]"
                                     : isDarkMode 
-                                      ? "text-white/80 hover:text-[#D4AF37]" 
+                                      ? "text-[#B0B0B0] hover:text-[#D4AF37]" 
                                       : "text-[#2C2C2C] hover:text-[#1E3A5F]"
                             }`}
                         >

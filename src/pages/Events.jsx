@@ -41,32 +41,40 @@ const Events = () => {
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${
-      isDarkMode 
-        ? "bg-[#1E3A5F] text-white" 
+        isDarkMode 
+        ? "bg-[#0F0F0F] text-[#F5F5F5]" 
         : "bg-white text-[#2C2C2C]"
     } pt-20`}>
-      {/* Top Section Image */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden">
-        <div className={`absolute inset-0 ${
-          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
-        }`}>
+      {/* Top Section Banner - With Picture */}
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+        <div className="absolute inset-0">
           <img 
             src="/assets/IMG-20251125-WA0024.jpg" 
             alt="Events & Summit" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
           />
+          {/* Lighter overlay for clearer image while maintaining text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
         </div>
-        <div className={`absolute inset-0 flex items-center justify-center ${
-          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
-        }`}>
-          <h1 className={`text-4xl md:text-6xl font-bold ${
-            isDarkMode ? "text-white" : "text-[#1E3A5F]"
-          }`}>
-            Events & <span className="text-[#D4AF37]">Summit</span>
-          </h1>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center relative z-10"
+          >
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 drop-shadow-2xl text-white`}>
+              Events & <span className="text-[#D4AF37] drop-shadow-lg">Summit</span>
+            </h1>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto drop-shadow-lg text-white`}>
+              Transformational experiences that empower and inspire
+            </p>
+          </motion.div>
         </div>
       </div>
 
@@ -80,20 +88,20 @@ const Events = () => {
           {/* BR!NK Summit 2025 */}
           <motion.div variants={itemVariants} className="mb-16">
             <div className={`p-12 rounded-2xl ${
-              isDarkMode 
-                ? "bg-[#1E3A5F] border border-[#D4AF37]/30" 
+                isDarkMode 
+                ? "bg-[#1A1A1A] border border-[#D4AF37]/30" 
                 : "bg-white border-2 border-[#1E3A5F]"
             }`}>
               <div className="flex items-center space-x-4 mb-6">
                 <Calendar className="w-10 h-10 text-[#D4AF37]" />
-                <h2 className={`text-4xl font-semibold ${
+                <h2 className={`text-2xl md:text-3xl font-semibold ${
                   isDarkMode ? "text-white" : "text-[#1E3A5F]"
                 }`}>
                   BR!NK Summit 2025
                 </h2>
               </div>
-              <p className={`text-xl mb-8 leading-relaxed ${
-                isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
+              <p className={`text-base md:text-lg mb-8 leading-relaxed ${
+                isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
               }`}>
                 A one-day transformational experience featuring keynote speakers, young leaders' roundtable, breakout sessions, and community-building.
               </p>
@@ -140,7 +148,7 @@ const Events = () => {
                 whileHover={{ y: -5 }}
                 className={`p-8 rounded-2xl border-2 ${
                   isDarkMode 
-                    ? "bg-[#1E3A5F] border-[#D4AF37]/30" 
+                    ? "bg-[#1A1A1A] border-[#D4AF37]/30" 
                     : "bg-white border-[#1E3A5F]"
                 }`}
               >

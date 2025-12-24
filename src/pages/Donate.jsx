@@ -24,43 +24,67 @@ const Donate = () => {
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${
-      isDarkMode 
-        ? "bg-[#2C2C2C] text-white" 
+        isDarkMode 
+        ? "bg-[#0F0F0F] text-[#F5F5F5]" 
         : "bg-white text-[#2C2C2C]"
     } pt-20`}>
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      {/* Top Section Banner - With Picture */}
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="/assets/IMG-20251125-WA0014.jpg" 
+            alt="Donate & Support" 
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+          {/* Lighter overlay for clearer image while maintaining text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
+        </div>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center relative z-10"
+          >
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 drop-shadow-2xl text-white`}>
+              Donate & <span className="text-[#D4AF37] drop-shadow-lg">Support</span>
+            </h1>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto drop-shadow-lg text-white`}>
+              Your contribution transforms lives and empowers the next generation
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          {/* Page Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className={`text-5xl md:text-6xl font-bold mb-4 ${
-              isDarkMode ? "text-white" : "text-[#1E3A5F]"
-            }`}>
-              Donate & <span className="text-[#D4AF37]">Support</span>
-            </h1>
-            <div className="w-24 h-1 mx-auto bg-[#D4AF37]"></div>
-          </motion.div>
 
           {/* Why Give */}
           <motion.div variants={itemVariants} className="mb-16">
             <div className={`p-8 rounded-2xl ${
               isDarkMode 
-                ? "bg-[#1E3A5F] border border-[#D4AF37]/30" 
+                ? "bg-[#1A1A1A] border border-[#D4AF37]/30" 
                 : "bg-white border-2 border-[#1E3A5F]"
             }`}>
               <div className="flex items-start space-x-4 mb-4">
                 <Heart className="w-8 h-8 text-[#D4AF37]" />
-                <h2 className={`text-3xl font-semibold ${
+                <h2 className={`text-2xl md:text-3xl font-semibold ${
                   isDarkMode ? "text-white" : "text-[#1E3A5F]"
                 }`}>
                   Why Give to BR!NK?
                 </h2>
               </div>
-              <p className={`text-lg leading-relaxed ml-12 ${
-                isDarkMode ? "text-white/90" : "text-[#2C2C2C]"
+              <p className={`text-base md:text-lg leading-relaxed ml-12 ${
+                isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"
               }`}>
                 Your support transforms lives. Every contribution helps students access mentorship, leadership training, emotional intelligence development, and transformational experiences.
               </p>
@@ -69,7 +93,7 @@ const Donate = () => {
 
           {/* Where Your Money Goes */}
           <motion.div variants={itemVariants} className="mb-16">
-            <h2 className={`text-3xl font-semibold mb-6 ${
+            <h2 className={`text-2xl md:text-3xl font-semibold mb-6 ${
               isDarkMode ? "text-white" : "text-[#1E3A5F]"
             }`}>
               Where Your Money Goes
@@ -86,7 +110,7 @@ const Donate = () => {
                   }`}
                 >
                   <use.icon className="w-6 h-6 text-[#D4AF37]" />
-                  <span className={isDarkMode ? "text-white/90" : "text-[#2C2C2C]"}>{use.text}</span>
+                  <span className={isDarkMode ? "text-[#F5F5F5]" : "text-[#2C2C2C]"}>{use.text}</span>
                 </motion.div>
               ))}
             </div>
@@ -94,7 +118,7 @@ const Donate = () => {
 
           {/* Ways to Give */}
           <motion.div variants={itemVariants} className="mb-16">
-            <h2 className={`text-3xl font-semibold mb-6 ${
+            <h2 className={`text-2xl md:text-3xl font-semibold mb-6 ${
               isDarkMode ? "text-white" : "text-[#1E3A5F]"
             }`}>
               Ways to Give
@@ -115,7 +139,7 @@ const Donate = () => {
                   }`}>
                     {way.type}
                   </h3>
-                  <p className={isDarkMode ? "text-white/80" : "text-[#2C2C2C]"}>
+                  <p className={isDarkMode ? "text-[#B0B0B0]" : "text-[#2C2C2C]"}>
                     {way.description}
                   </p>
                 </motion.div>

@@ -47,36 +47,44 @@ const GetInvolved = () => {
 
   return (
     <div className={`min-h-screen pt-20 relative overflow-hidden transition-colors ${
-      isDarkMode 
-        ? "bg-[#1E3A5F] text-white" 
+        isDarkMode 
+        ? "bg-[#0F0F0F] text-[#F5F5F5]" 
         : "bg-white text-[#2C2C2C]"
     }`}>
-      {/* Top Section Image */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden">
-        <div className={`absolute inset-0 ${
-          isDarkMode ? "bg-[#2C2C2C]" : "bg-[#1E3A5F]"
-        }`}>
+      {/* Top Section Banner - With Picture */}
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+        <div className="absolute inset-0">
           <img 
-            src="/assets/brink_logo.jpg" 
+            src="/assets/IMG-20251125-WA0010.jpg" 
             alt="Get Involved" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
           />
+          {/* Lighter overlay for clearer image while maintaining text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
         </div>
-        <div className={`absolute inset-0 flex items-center justify-center ${
-          isDarkMode ? "bg-[#1E3A5F]/60" : "bg-white/60"
-        }`}>
-          <h1 className={`text-4xl md:text-6xl font-bold ${
-            isDarkMode ? "text-white" : "text-[#1E3A5F]"
-          }`}>
-            Get <span className="text-[#D4AF37]">Involved</span>
-          </h1>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center relative z-10"
+          >
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 drop-shadow-2xl text-white`}>
+              Get <span className="text-[#D4AF37] drop-shadow-lg">Involved</span>
+            </h1>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto drop-shadow-lg text-white`}>
+              Join us in empowering the next generation
+            </p>
+          </motion.div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -92,7 +100,7 @@ const GetInvolved = () => {
           </motion.div>
 
           {/* Involvement Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {involvementOptions.map((option, index) => (
               <motion.div
                 key={index}
@@ -100,7 +108,7 @@ const GetInvolved = () => {
                 whileHover={{ y: -5, scale: 1.02 }}
                 className={`p-8 rounded-2xl border-2 flex flex-col shadow-lg ${
                   isDarkMode 
-                    ? "bg-[#2C2C2C] border-[#D4AF37] text-white" 
+                    ? "bg-[#1A1A1A] border-[#D4AF37] text-[#F5F5F5]" 
                     : "bg-white border-[#1E3A5F]"
                 }`}
               >
@@ -113,7 +121,7 @@ const GetInvolved = () => {
                   {option.title}
                 </h2>
                 <p className={`mb-6 flex-grow leading-relaxed ${
-                  isDarkMode ? "text-white/80" : "text-[#2C2C2C]"
+                  isDarkMode ? "text-[#B0B0B0]" : "text-[#2C2C2C]"
                 }`}>
                   {option.description}
                 </p>

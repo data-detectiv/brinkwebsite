@@ -7,10 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
 *.local
+
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
 
 # Editor directories and files
 .vscode/*
@@ -23,9 +32,20 @@ dist-ssr
 *.sln
 *.sw?
 
+# Build outputs
 .next/
 out/
-node_modules/
-.env
+build/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Sensitive files
+*.key
+*.pem
+*.cert
+secrets.json
+config.json
 
 

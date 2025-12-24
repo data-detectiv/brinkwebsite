@@ -37,41 +37,35 @@ import {
     ];
   
     return (
-      <div className="min-h-screen relative overflow-hidden bg-[#1E3A5F] text-white">
+      <div className={`min-h-screen relative overflow-hidden ${isDarkMode ? "bg-[#0F0F0F]" : "bg-[#1E3A5F]"} text-white`}>
   
         {/* ⭐ YouTube Fullscreen Background - Video with mr Jeff ⭐ */}
-<div className="absolute inset-0 z-0 overflow-hidden">
-  <div className="absolute inset-0 w-full h-full">
-    {/* Replace VIDEO_ID with the actual YouTube video ID featuring mr Jeff */}
-    <iframe
-      className="absolute top-1/2 left-1/2 w-[177.78vh] h-[177.78vw] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2"
-      style={{
-        width: '100vw',
-        height: '56.25vw',
-        minHeight: '100vh',
-        minWidth: '177.78vh'
-      }}
-      src="https://youtube.com/embed/TDnkcjme0lg?autoplay=1&mute=1&controls=0&loop=1&playlist=TDnkcjme0lg&modestbranding=1&showinfo=0&playsinline=1&rel=0"
-      title="YouTube background - BR!NK with mr Jeff"
-      frameBorder="0"
-      allow="autoplay; fullscreen; encrypted-media"
-      allowFullScreen
-    ></iframe>
-  </div>
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute inset-0 w-full h-full video-background-container">
+            {/* Responsive video that covers all screen sizes */}
+            <iframe
+              className="video-background-iframe"
+              src="https://youtube.com/embed/TDnkcjme0lg?autoplay=1&mute=1&controls=0&loop=1&playlist=TDnkcjme0lg&modestbranding=1&showinfo=0&playsinline=1&rel=0&start=0"
+              title="YouTube background - BR!NK with mr Jeff"
+              frameBorder="0"
+              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
 
-  {/* Dark overlays - stronger on mobile */}
-  <div className="absolute inset-0 bg-[#1E3A5F]/50 md:bg-[#1E3A5F]/40"></div>
-  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 md:from-black/40 md:to-black/60"></div>
-</div>
+          {/* Dark overlays - stronger on mobile for better text readability */}
+          <div className={`absolute inset-0 ${isDarkMode ? "bg-[#0F0F0F]/60 sm:bg-[#0F0F0F]/50 md:bg-[#0F0F0F]/40" : "bg-[#1E3A5F]/60 sm:bg-[#1E3A5F]/50 md:bg-[#1E3A5F]/40"}`}></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 sm:from-black/50 sm:to-black/70 md:from-black/40 md:to-black/60"></div>
+        </div>
 
   
         {/* HERO CONTENT */}
         <motion.section
           id="home"
           style={{ y: heroY }}
-          className="min-h-screen flex items-center justify-center relative px-6 pt-20 z-10"
+          className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 pt-20 pb-12 z-10"
         >
-          <div className="max-w-7xl mx-auto w-full z-10 mt-20">
+          <div className="max-w-7xl mx-auto w-full z-10 mt-12 sm:mt-16 md:mt-20">
   
             <motion.div
               initial="hidden"
@@ -88,7 +82,7 @@ import {
   
               <motion.h1
                 variants={itemVariants}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold mb-4 md:mb-6 leading-tight px-2"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold mb-4 md:mb-6 leading-tight px-2"
               >
                 <span className="text-white">BR!NK</span>
                 <br />
@@ -96,14 +90,14 @@ import {
                 <br />
                 <span className="text-white">Leadership and Purpose</span>
                 <br />
-                <span className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-normal">
+                <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-normal">
                   in the Next Generation
                 </span>
               </motion.h1>
   
               <motion.p
                 variants={itemVariants}
-                className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 md:mb-8 max-w-3xl mx-auto font-light leading-relaxed px-4"
+                className={`text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-3xl mx-auto font-light leading-relaxed px-4 ${isDarkMode ? "text-[#F5F5F5]" : "text-white/90"}`}
               >
                 BR!NK empowers college or high-school students to live with clarity, purpose,
                 and leadership. We provide mentorship, skill-based learning, and
@@ -160,7 +154,7 @@ import {
                   >
                     <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mx-auto mb-2 text-[#D4AF37]" />
                     <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-1 text-white">{stat.number}</div>
-                    <div className="text-[10px] sm:text-xs uppercase tracking-wider text-white/80 leading-tight">{stat.label}</div>
+                    <div className={`text-[10px] sm:text-xs uppercase tracking-wider leading-tight ${isDarkMode ? "text-[#B0B0B0]" : "text-white/80"}`}>{stat.label}</div>
                   </motion.div>
                 ))}
               </motion.div>
